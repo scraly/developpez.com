@@ -1,6 +1,4 @@
-# Introduction a Terraform
-
-## Qu’est ce que Terraform ?
+# Qu’est ce que Terraform ?
 
 [Terraform](https://www.terraform.io/) est un outil créé en 2014 par HashiCorp, la société qui a créé d’autres outils que vous connaissez surement : Consul, Vagrant, Vault, Atlas, Packer et Nomad.
 
@@ -18,7 +16,7 @@ Que fait l’outil ?
 * On peut détruire des ressources si besoin
 * On peut prévisualiser les modifications avant de les appliquer
 
-## HCL
+# HCL
 
 Les fichiers de configurations s’écrivent en HCL (HashiCorp Configuration Language). Le principe est d’écrire des ressources.
 Les ressources peuvent être écrites en JSON également mais il est recommandé de les écrire en HCL.
@@ -28,11 +26,11 @@ Lire un fichier de configuration HCL est plutôt simple et intuitif.
 
 C’est un langage dit “human readable”. Ce qu’il faut savoir c’est que Terraform scan tous les fichiers se terminant par .tf dans le répertoire courant, il ne va pas scanner les répertoires enfants par contre.
 
-## Concepts
+# Concepts
 
 On va voir ensemble quelques concepts :
 
-### Provider
+## Provider
 
 Un provider est responsable du cycle de vie/du CRUD d’une ressource : sa création, sa lecture, sa mise à jour et sa suppression.
 
@@ -126,7 +124,7 @@ resource "aws_s3_bucket" "com-developpez-terraform" {
 }
 ```
 
-### Modules
+## Modules
 
 Les modules sont utilisés pour créer des composants réutilisables, améliorer l’organisation et traiter les éléments de l’infrastructure comme une boite noire.
 C’est un groupe de ressources qui prennent en entrée des paramètres et retournent en sortie des outputs.
@@ -142,7 +140,7 @@ module "lambda" {
 }
 ```
 
-### Outputs
+## Outputs
 
 Les modules peuvent produire des outputs que l’on pourra utiliser dans d’autres ressources.
 
@@ -166,7 +164,7 @@ resource "aws_api_gateway_authorizer" "custom_authorizer" {
 }
 ```
 
-### Data Sources
+## Data Sources
 
 Les data sources (aka sources de données) servent à récupérer une donnée/ressource existante dans votre infra.
 
@@ -195,7 +193,7 @@ module "developpez" {
 }
 ```
 
-### External Data Source
+## External Data Source
 
 Comme nous l'avons vu, il est possible de récupérer une data source grâce à un système de filtre. C'est super ... mais, et oui il y a un mais ... maleureusement ce filtering n'est pas possible avec tous les types de ressources.
 
@@ -209,7 +207,7 @@ La solution est de :
 
 3. Utiliser cette donnée spéciale dans une ressource que vous voulez créer
 
-#### 1. Création du script
+### 1. Création du script
 
 `my_module/scripts/get_elb.sh` :
 
@@ -228,7 +226,7 @@ $ ./my_module/scripts/get_elb.sh
 }
 ```
 
-#### 2. Définition de l'external data source
+### 2. Définition de l'external data source
 
 `my_module/data.tf` :
 
@@ -238,7 +236,7 @@ data"external" "elb" {
 }
 ```
 
-#### 3. Définition de la ressource souhaitée
+### 3. Définition de la ressource souhaitée
 
 `my_module/aws_r53.tf` :
 
@@ -252,7 +250,7 @@ resource "aws_route53_record""mymodule_CNAME" {
 }
 ```
 
-### State
+## State
 
 Un state est un snapshot de votre infrastructure depuis la dernière fois que vous avez exécuté la commande terraform apply.
 
@@ -276,11 +274,11 @@ terraform {
 }
 ```
 
-## CLI
+# CLI
 
 Terraform a une CLI (Command-Line Interface) facile à utiliser et est composée de plusieurs commandes, nous allons en voir quelques unes, pas toutes, uniquement celles que j’utilises le plus au quotidien.
 
-### Init
+## Init
 
 `$ terraform init`
 
@@ -293,7 +291,7 @@ La commande init va :
 * initialiser le backend (si définit)
 * télécharger et installer les modules (si définit)
   
-### Plan
+## Plan
 
 `$ terraform plan`
 
@@ -304,7 +302,7 @@ Bonne pratique : afin de sauver le plan, vous pouvez spécifier un fichier de so
 
 `$ terraform plan -out developpez.out`
 
-### Apply
+## Apply
 
 $ terraform apply developpez.out
 
@@ -312,7 +310,7 @@ La commande apply, comme son nom l’indique, permet d’appliquer les changemen
 
 Attention, depuis la version 0.11 de Terraform, sorti le 16 novembre dernier, lorsque vous utilisez TF dans un environnement interactif, en local par exemple, mais pas en CI/CD, il est recommandé de ne plus passer par un plan mais de directement faire un apply et de répondre Yes si vous souhaitez appliquer ce plan.
 
-### Providers
+## Providers
 
 Après application de la définition de vos ressources, vous pouvez vérifier les providers utilisés par Terraform dans votre projet & modules :
 
@@ -325,7 +323,7 @@ $ terraform providers
 └── provider.external
 ```
 
-### Destroy
+## Destroy
 
 `$ terraform destroy`
 
@@ -335,7 +333,7 @@ Un plan de suppression peut être généré au préalable :
 
 `$ terraform plan -destroy`
 
-### Console
+## Console
 
 Grâce à la CLI console, vous pouvez connaitre la valeur d’une ressource terraform. Cette commande est pratique pour faire du debug, avant de créer un plan ou de l’appliquer.
 
@@ -344,13 +342,13 @@ $ echo "aws_iam_user.developpez.arn" | terraform console
 arn:aws:iam::123456789123:user/developpez
 ```
 
-### Get
+## Get
 
 `$ terraform get`
 
 Cette commande est utile si par le passé vous avez déjà fait un terraform init puis ajouté un module, il faut préciser maintenant a terraform qu’il faut récupérer le module ou bien le mettre à jour. Si vous ne le faites pas, lors de d’un terraform plan, TF vous demandera de le faire ;-).
 
-### Graph
+## Graph
 
 `$ terraform graph | dot -Tpng > graph.png`
 
@@ -360,7 +358,7 @@ La CLI graph permet de dessiner un graphique de dépendances visuelle des ressou
 
 Au bout d’un certains nombre de ressources dans un répertoire, terraform n’arrive plus à générer ce graphique. J’espère que ce problème sera corrigé dans les futures version ;-).
 
-## Pratiques != Bonnes pratiques
+# Pratiques != Bonnes pratiques
 
 Si vous vous êtes déjà renseignés sur Terraform avant de consulter ce tutoriel, vous avez sans doute vu que la pratique d'organisation du code que l'on voit sur le net est que toutes les ressources Terraform sont écrites dans un fichier *main.tf* qui contient un peu de tout : la définition des ressources à créer, la définition du remote state, de la version du/des providers à utiliser ...
 
@@ -407,11 +405,11 @@ Exemple :
 └── variables.tf
 ```
 
-## Utilisation
+# Utilisation
 
 Trève de blabla, passons à la pratique !
 
-### Installation
+## 0. Installation
 
 Commençons tout d’abord par installer Terraform :
 
@@ -447,11 +445,11 @@ $ terraform --version
 
 Info: terraform -version fonctionne également.
 
-### 1. Création d’un répertoire
+## 1. Initialisation du projet - Création d’un répertoire
 
 `$ mkdir developpez/`
 
-### 2. Création d’un fichier .tf
+## 2. Création d'une ressource
 
 ```
 $ vi aws_s3.tf
@@ -466,7 +464,7 @@ acl = "private"
 }
 ```
 
-### 3. Pré-requis
+## 3. Pré-requis
 
 Pour indiquer à terraform sur quel compte AWS vous souhaitez déployer l'infrastructure souhaitée, vous devez définir des variables d'environnement AWS au préalable, par exemple dans un fichier .aws/credentials ou avec des variables d'environnement : 
  
@@ -476,7 +474,7 @@ $ export AWS_SECRET_ACCESS_KEY="a_aws_secret_key"
 $ export AWS_DEFAULT_REGION="a-region"
 ```
 
-### 4. Initialiser Terraform
+## 4. Initialiser Terraform
 
 ```
 $ terraform init
@@ -492,7 +490,7 @@ suggested below.
 * provider.aws: version = "~> 1.3"
 ```
 
-### 5. Plan
+## 5. Plan
 
 ```
 $ terraform plan -out crf.out
@@ -504,7 +502,7 @@ aws_s3_bucket.com-developpez-terraform: Refreshing state... (ID: com.developpez.
 Plan: 1 to add, 0 to change, 0 to destroy.
 ```
 
-### 6. On applique le plan
+## 6. On applique le plan
 
 ```
 $ terraform apply plan.out
@@ -512,17 +510,17 @@ $ terraform apply plan.out
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-## Outils & Tips
+# Outils & Tips
 
-### jq
+## jq
 
 jq est un comand-line JSON processor léger. Combiné avec les output de Terraform cela peut être très puissant.
 
-#### Installation
+### Installation
 
 `$ sudo apt install jq`
 
-#### Utilisation
+### Utilisation
 
 Nous allons récupérer uniquement le endpoint d'un elasticsearch :
 
@@ -531,7 +529,7 @@ $ terraform output -json | jq '.elastic_endpoint.value'
 "vpc-toto-12fgf1235f4d1235get123.eu-central-1.es.amazonaws.com"
 ```
 
-### Terraforming
+## Terraforming
 
 Afin de nous faciliter la vie, il y a quelques petits outils intéressant à connaître et à utiliser. Si vous avez une infra AWS existante et que vous devez la dupliquer dans plusieurs autres comptes, Terraforming (https://github.com/dtan4/terraforming) est fait pour vous. C’est un outil écrit en Ruby qui permet d’extraire des ressources AWS existantes et de générer un fichier terraform correspondant.
 
@@ -565,7 +563,7 @@ resource "aws_s3_bucket_object" "authorizer_keystore" {
 
 Attention, terraforming ne prend pas en compte toutes les ressources AWS, notamment les API Gateway. De ce fait, même si vous souhaitez dupliquer une API GW existante, il vous faudra vous les écrire à la mimine.
 
-### Gitignore
+## Gitignore
 
 `.gitignore` :
 
@@ -584,24 +582,24 @@ Attention, terraforming ne prend pas en compte toutes les ressources AWS, notamm
 *.out
 ```
 
-### Module registry
+## Module registry
 
 ![Terraform module registry](images/terraform_registry.png)
 
 Plutôt que de créer vos propre modules, une autre bonne pratique est de consulter avant sur le [module registry](https://registry.terraform.io/) s'il en existe pas déjà un répondant à vos besoin.
 
-### Terraform CLI Cheat Sheet
+## Terraform CLI Cheat Sheet
 
 En tant que développeur et DevOps on aime bien avoir des petits guide qui nous résument tout ce qu'il y a à savoir sur une technologie. N'en ayant pas trouver d'existante concernant Terraform, j'ai décidé de créer ma propre Cheat SHeet que j'ai mis sur Github afin de le partager à tout le monde : [github.com/scraly/terraform-cheat-sheet](https://github.com/scraly/terraform-cheat-sheet/)
 
 ![Terraform CLI Cheat Sheet](images/terraform_cli_cheat_sheet.png)
 
-## Terraform VS CloudFormation
+# Terraform VS CloudFormation
 
 Terraform n’est pas le seul a pouvoir faire de l’infrastruce as Code. Lorsque l’on parle de AWS il y a également CF qui existe.
 Voici un petit tableau qui compare les deux technologies :
 
-### Terraform
+## Terraform
 
 * Support de presque tous les services AWS et d’autres (cloud) providers
 * Open Source
@@ -610,7 +608,7 @@ Voici un petit tableau qui compare les deux technologies :
 * State management
 * Support de Vault
 
-### CloudFormation
+## CloudFormation
 
 * Support de presque tous les services AWS (uniquement ce cloud provider!)
 * Service géré et “offert” par AWS
@@ -646,13 +644,13 @@ resource "aws_cloudformation_stack" "my_stack" {
 }
 ```
 
-## Avantages / Inconvénients
+# Avantages / Inconvénients
 
 Terraform n’est pas une baguette magique, cette technologie a des inconvénients, comme pour toutes les technos. Il s’agit notamment d’un outil assez jeune, et en constante évolution donc il y a des bugs et toutes les ressources de tous les providers ne sont pas encore pris en compte.
 
 On peut dresser une petite liste de “Pros” et de “Cons :
 
-### Avantages
+## Avantages
 
 * Permet de définir de l’Infrastructure as Code
 * Syntaxe concise et lisible
@@ -661,7 +659,7 @@ On peut dresser une petite liste de “Pros” et de “Cons :
 * Multi cloud support
 * Développement très actif
 
-### Inconvénients
+## Inconvénients
 
 * Outil jeune (comporte des bugs)
 * Pas de rollback possible
@@ -677,7 +675,7 @@ J’ajouterai que les messages d’erreurs ne sont pas super explicite :
 	status code: 403, request id: 17c82bc7-e3cb-11e7-8a7e-6b18fbf66fae
 ```
 
-### Conclusion
+# Conclusion
 
 Ma conclusion personnelle est que Terraform est un des outils qui permet de faire de l’Infrastructure as Code et de passer du ClickOps au DevOps. 
 
