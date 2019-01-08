@@ -7,7 +7,7 @@
 C’est un outil Open Source, écrit en Go, avec une communauté active de plus de 1200 contributeurs, plus de 13000 stars sur Github, et qui repose sur une architecture basée sur les plugins.
 
 Terraform (TF) est un outil qui permet de *construire*, *modifier* et *versionner* une infrastructure.
-Contrairement à ce que l’on peut lire sur internet, la technologie n’est pas plateforme agnostic MAIS elle permet d’utiliser plusieurs providers dans un même template de configuration. Il existe en effet des plugins pour des providers de Cloud, des services d’hébergement, des SCM … Nous le verrons un peu plus tard dans cet article.
+Contrairement à ce que l’on peut lire sur internet, la technologie n’est pas plateforme agnostique MAIS elle permet d’utiliser plusieurs providers dans un même template de configuration. Il existe en effet des plugins pour des providers de Cloud, des services d’hébergement, des SCM … Nous le verrons un peu plus tard dans cet article.
 
 Que fait l’outil ?
 
@@ -16,7 +16,19 @@ Que fait l’outil ?
 * On peut détruire des ressources si besoin
 * On peut prévisualiser les modifications avant de les appliquer
 
-# HCL
+Concrêtement, Terraform permet de créer automatiquement son infrastructure, comme par exemple des machines virtuelles, des lambdas AWS ... le tout, simplement, en 3 étapes :
+
+![Etapes](images/tf_write.png)
+
+1. *Write* : on écrit la définition de ses ressources dans des fichiers .tf
+2. *Plan* : un plan des ressources à créer/modifier & supprimer est affiché, avant tout changement
+3. *Create* : l'infra voulue est mise en place, et reproductible dans tous les environnments souhaités
+
+# Concepts
+
+On va voir ensemble quelques concepts :
+
+## HCL
 
 Les fichiers de configurations s’écrivent en HCL (HashiCorp Configuration Language). Le principe est d’écrire des ressources.
 Les ressources peuvent être écrites en JSON également mais il est recommandé de les écrire en HCL.
@@ -25,10 +37,6 @@ Lire un fichier de configuration HCL est plutôt simple et intuitif.
 ![Fichier Terraform](images/tf_file.png)
 
 C’est un langage dit “human readable”. Ce qu’il faut savoir c’est que Terraform scan tous les fichiers se terminant par .tf dans le répertoire courant, il ne va pas scanner les répertoires enfants par contre.
-
-# Concepts
-
-On va voir ensemble quelques concepts :
 
 ## Provider
 
