@@ -24,6 +24,23 @@ Concrêtement, Terraform permet de créer automatiquement son infrastructure, co
 2. *Plan* : un plan des ressources à créer/modifier & supprimer est affiché, avant tout changement
 3. *Create* : l'infra voulue est mise en place, et reproductible dans tous les environnments souhaités
 
+L'exemple ci-dessous montre que, en quelques lignes de code, on va pouvoir déployer/créer un bucket S3 sur AWS :
+
+```
+resource "aws_s3_bucket" "com-developpez-terraform" {
+  bucket = "mon-bucket-aws-s3-pour-developpez-com"
+  acl    = "private"
+
+  tags {
+    Contact = "Aurelie Vache"
+  }
+}
+```
+
+Résultat sur AWS :
+
+![aws s3 bucket](images/tf_bucket.png)
+
 # Concepts
 
 On va voir ensemble quelques concepts :
