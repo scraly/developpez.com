@@ -329,7 +329,7 @@ Bonne pratique : afin de sauver le plan, vous pouvez spécifier un fichier de so
 
 ## Apply
 
-$ terraform apply developpez.out
+`$ terraform apply developpez.out`
 
 La commande apply, comme son nom l’indique, permet d’appliquer les changements à effectuer sur l’infra. C’est cette commande qui va créer nos ressources.
 
@@ -367,7 +367,7 @@ $ echo "aws_iam_user.developpez.arn" | terraform console
 arn:aws:iam::123456789123:user/developpez
 ```
 
-## Get
+## Get
 
 `$ terraform get`
 
