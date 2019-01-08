@@ -149,7 +149,7 @@ resource "aws_s3_bucket" "com-developpez-terraform" {
 }
 ```
 
-## Modules
+## Modules
 
 Les modules sont utilisés pour créer des composants réutilisables, améliorer l’organisation et traiter les éléments de l’infrastructure comme une boite noire.
 C’est un groupe de ressources qui prennent en entrée des paramètres et retournent en sortie des outputs.
@@ -299,7 +299,7 @@ terraform {
 }
 ```
 
-# CLI
+# CLI
 
 Terraform a une CLI (Command-Line Interface) facile à utiliser et est composée de plusieurs commandes, nous allons en voir quelques unes, pas toutes, uniquement celles que j’utilises le plus au quotidien.
 
