@@ -383,53 +383,6 @@ La CLI graph permet de dessiner un graphique de dépendances visuelle des ressou
 
 Au bout d’un certains nombre de ressources dans un répertoire, terraform n’arrive plus à générer ce graphique. J’espère que ce problème sera corrigé dans les futures version ;-).
 
-# Pratiques != Bonnes pratiques
-
-Si vous vous êtes déjà renseignés sur Terraform avant de consulter ce tutoriel, vous avez sans doute vu que la pratique d'organisation du code que l'on voit sur le net est que toutes les ressources Terraform sont écrites dans un fichier *main.tf* qui contient un peu de tout : la définition des ressources à créer, la définition du remote state, de la version du/des providers à utiliser ...
-
-Personnellement je ne recommande pas du tout cette approche.
-Je pense qu’il ne faut pas confondre les pratiques et les bonnes pratiques.
-
-Faire du Terraform c’est faire de l’Infratsrucure as Code et donc c’est faire/écrire du code. Il s'agit donc de coder coder proprement. Afin que le code puisse être maintenable, s'il y a une bonne pratique à savoir est q'il vaut mieux bien organiser son code et ce cas s'applique également pour de l'IaC et donc nos fichiers Terraform.
-
-Aurevoir l'énorme fichier main.tf contenant des torchons, des serviettes et des chaussettes (ou plutpot du GCP, Azure, AWS, Kubernetes, Vault ....) et bonjour une organisation de fichier .tf qui conciste à séparer par fichier par types de ressources et à utiliser des modules.
-
-Exemple :
-
-```
-.
-├── backend.tf
-├── cfg
-│   ├── s3.dev.tf
-│   ├── s3.prerprod.tf
-│   └── s3.prod.tf
-├── mymodule1
-│   ├── aws_acm.tf
-│   ├── aws_api_gateway.tf
-│   ├── aws_cloudwatch.tf
-│   ├── aws_iam.tf
-│   ├── aws_kinesis.tf
-│   ├── aws_lambda.tf
-│   ├── aws_r53.tf
-│   ├── aws_s3.tf
-│   ├── data.tf
-│   ├── output.tf
-│   ├── resources
-│   │   └── swagger.json
-│   └── variables.tf
-├── data.tf
-├── mymodule2
-│   ├── aws_els.tf
-│   ├── output.tf
-│   └── variables.tf
-├── root.tf
-├── scripts
-│   ├── migrateMapping.sh
-│   └── resources
-│       └── myproject.json
-└── variables.tf
-```
-
 # Utilisation
 
 Trève de blabla, passons à la pratique !
@@ -535,7 +488,54 @@ $ terraform apply plan.out
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-# Outils & Tips
+# Tips & Outils
+
+## Pratiques != Bonnes pratiques
+
+Si vous vous êtes déjà renseignés sur Terraform avant de consulter ce tutoriel, vous avez sans doute vu que la pratique d'organisation du code que l'on voit sur le net est que toutes les ressources Terraform sont écrites dans un fichier *main.tf* qui contient un peu de tout : la définition des ressources à créer, la définition du remote state, de la version du/des providers à utiliser ...
+
+Personnellement je ne recommande pas du tout cette approche.
+Je pense qu’il ne faut pas confondre les pratiques et les bonnes pratiques.
+
+Faire du Terraform c’est faire de l’Infratsrucure as Code et donc c’est faire/écrire du code. Il s'agit donc de coder coder proprement. Afin que le code puisse être maintenable, s'il y a une bonne pratique à savoir est q'il vaut mieux bien organiser son code et ce cas s'applique également pour de l'IaC et donc nos fichiers Terraform.
+
+Aurevoir l'énorme fichier main.tf contenant des torchons, des serviettes et des chaussettes (ou plutpot du GCP, Azure, AWS, Kubernetes, Vault ....) et bonjour une organisation de fichier .tf qui conciste à séparer par fichier par types de ressources et à utiliser des modules.
+
+Exemple :
+
+```
+.
+├── backend.tf
+├── cfg
+│   ├── s3.dev.tf
+│   ├── s3.prerprod.tf
+│   └── s3.prod.tf
+├── mymodule1
+│   ├── aws_acm.tf
+│   ├── aws_api_gateway.tf
+│   ├── aws_cloudwatch.tf
+│   ├── aws_iam.tf
+│   ├── aws_kinesis.tf
+│   ├── aws_lambda.tf
+│   ├── aws_r53.tf
+│   ├── aws_s3.tf
+│   ├── data.tf
+│   ├── output.tf
+│   ├── resources
+│   │   └── swagger.json
+│   └── variables.tf
+├── data.tf
+├── mymodule2
+│   ├── aws_els.tf
+│   ├── output.tf
+│   └── variables.tf
+├── root.tf
+├── scripts
+│   ├── migrateMapping.sh
+│   └── resources
+│       └── myproject.json
+└── variables.tf
+```
 
 ## jq
 
@@ -619,9 +619,10 @@ En tant que développeur et DevOps on aime bien avoir des petits guide qui nous 
 
 ![Terraform CLI Cheat Sheet](images/terraform_cli_cheat_sheet.png)
 
-# Terraform VS CloudFormation
+# Comparaison avec des outils équivalent
 
-Terraform n’est pas le seul a pouvoir faire de l’infrastruce as Code. Lorsque l’on parle de AWS il y a également CF qui existe.
+Terraform n’est pas le seul a pouvoir faire de l’infrastruce as Code. Lorsque l’on parle de AWS il y a également CloudFormation qui existe.
+
 Voici un petit tableau qui compare les deux technologies :
 
 ## Terraform
