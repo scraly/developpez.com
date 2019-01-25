@@ -230,7 +230,8 @@ module "developpez" {
 
 Comme nous l'avons vu, il est possible de récupérer une source de données grâce à un système de filtre. C'est super ... mais, et oui il y a un mais ... malheureusement ce filtrage n'est pas possible avec tous les types de ressources.
 
-Imaginons que nous souhaitons récupérer un réseau d'équilibrage de charge, chez AWS, pour pouvoir créer une AWS Route 53 Record (entrée dans un nom de domaine). Nous ne pouvons appliquer un filtre sur ce type de ressource, nous allons donc devoir trouver une parade pour récupérer notre fameux réseau d'équiliabrage de charge.
+Chez AWS il existe deux types d'équilibrage de charge (load balancer) : classique et réseau (network).
+Imaginons que nous souhaitons récupérer un équilibrage de charge de type réseau, chez AWS, pour pouvoir créer une AWS Route 53 Record (entrée dans un nom de domaine). Nous ne pouvons appliquer un filtre sur ce type de ressource, nous allons donc devoir trouver une parade pour récupérer notre fameux équiliabrage de charge de type réseau.
 
 La solution est de réaliser les actions suivantes.
 
